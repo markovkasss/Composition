@@ -10,4 +10,14 @@
     <string name="easy_level">Легкий</string>
     <string name="normal_level">Нормальный</string>
     <string name="hard_level">Тяжелый</string>
+    <string name="game_over">Game over</string>
+    <string name="the_required_number_of_correct_answers">Необходимое количество правильных ответов %s</string>
+    <string name="you_score">Ваш счет %s</string>
+    <string name="score_answers">Ваш счет: %s</string>
+    <string name="score_percentage">Процент правильных ответов: %s</string>
+    <string name="retry">Попробовать снова</string>
+    <string name="right_answers">Правильных ответов %s из %s необходимых</string>
+    <string name="required_percentage">Необходимый процент правильных ответов: %s</string>
+    <string name="required_score">Необходимое количество правильных ответов: %s</string>
+    <string name="progress_answers">Правильных ответов %s (минимум %s)</string>
 </resources>
