@@ -1,8 +1,10 @@
 package com.markovkasss.composition.domain.entity
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.io.Serializable
-
-enum class Level{
+@Parcelize
+enum class Level : Parcelable{
 
     TEST, EASY, NORMAL, HARD
 }
