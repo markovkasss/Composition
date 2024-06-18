@@ -39,42 +39,12 @@ class GameFinishedFragment : Fragment() {
         binding.buttonRetry.setOnClickListener {
             retryGame()
         }
-        bindingTV()
-        choosePictureToWinnerOrNot()
+        binding.gameResult = args.gameResult
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun bindingTV() {
-        binding.tvScoreAnswers.text = String.format(
-            resources.getString(R.string.score_answers),
-            args.gameResult.countOfRightAnswers.toString()
-        )
-        binding.tvScorePercentage.text = String.format(
-            getString(R.string.score_percentage),
-            getPercentOfRightAnswers().toString()
-        )
-        binding.tvRequiredAnswers.text = String.format(
-            getString(R.string.required_score),
-            args.gameResult.gameSettings.minCountOfRightAnswers.toString()
-        )
-        binding.tvRequiredPercentage.text = String.format(
-            getString(R.string.required_percentage),
-            args.gameResult.gameSettings.minPercentOfRightAnswers.toString()
-        )
-    }
-
-    private fun choosePictureToWinnerOrNot() {
-        val drawableWin = resources.getDrawable(R.drawable.fun_ic)
-        val drawableLose = resources.getDrawable(R.drawable.sad_ic)
-        if (args.gameResult.winner) {
-            binding.emojiResult.setImageDrawable(drawableWin)
-        } else {
-            binding.emojiResult.setImageDrawable(drawableLose)
-        }
     }
 
     private fun getPercentOfRightAnswers() = with(args.gameResult) {
