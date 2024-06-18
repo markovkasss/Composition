@@ -18,12 +18,12 @@ import com.markovkasss.composition.domain.entity.Level
 
 class GameFragment : Fragment() {
 
-    private lateinit var level: Level
     private val viewModel: GameViewModel by lazy {
+        val args = GameFragmentArgs.fromBundle(requireArguments())
         ViewModelProvider(
             this,
             GameViewModelFactory(
-                level,
+                args.level,
                 requireActivity().application
             )
         )[GameViewModel::class.java]
@@ -46,7 +46,6 @@ class GameFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        parseArgs()
     }
 
     override fun onCreateView(
@@ -68,15 +67,15 @@ class GameFragment : Fragment() {
         _binding = null
     }
 
-    private fun setOnClickListenerToOptions(){
-        for (tvOptions in tvOptions){
-            tvOptions.setOnClickListener{
+    private fun setOnClickListenerToOptions() {
+        for (tvOptions in tvOptions) {
+            tvOptions.setOnClickListener {
                 viewModel.chooseAnswer(tvOptions.text.toString().toInt())
             }
         }
     }
 
-    private fun observeViewModel(){
+    private fun observeViewModel() {
         viewModel.question.observe(viewLifecycleOwner) {
             binding.tvSum.text = it.sum.toString()
             binding.tvLeftNumber.text = it.visibleNumber.toString()
@@ -87,61 +86,41 @@ class GameFragment : Fragment() {
         viewModel.percentOfRightAnswers.observe(viewLifecycleOwner) {
             binding.progressBar.setProgress(it, true)
         }
-        viewModel.formatted.observe(viewLifecycleOwner){
+        viewModel.formatted.observe(viewLifecycleOwner) {
             binding.tvTimer.text = it
         }
-        viewModel.minPercent.observe(viewLifecycleOwner){
+        viewModel.minPercent.observe(viewLifecycleOwner) {
             binding.progressBar.secondaryProgress = it
         }
-        viewModel.gameResult.observe(viewLifecycleOwner){
+        viewModel.gameResult.observe(viewLifecycleOwner) {
             launchGameFinishedFragment(it)
         }
-        viewModel.progressAnswers.observe(viewLifecycleOwner){
+        viewModel.progressAnswers.observe(viewLifecycleOwner) {
             binding.tvAnswersProgress.text = it
         }
-        viewModel.enoughCountOfRightAnswers.observe(viewLifecycleOwner){
+        viewModel.enoughCountOfRightAnswers.observe(viewLifecycleOwner) {
             binding.tvAnswersProgress.setTextColor(getColorByState(it))
         }
-        viewModel.enoughPercentOfRightAnswers.observe(viewLifecycleOwner){
+        viewModel.enoughPercentOfRightAnswers.observe(viewLifecycleOwner) {
             val color = getColorByState(it)
             binding.progressBar.progressTintList = ColorStateList.valueOf(color)
         }
     }
 
-    private fun parseArgs() {
-        requireArguments().getParcelable<Level>(KEY_LEVEL)?.let {
-            level = it
-        }
-    }
-
     private fun launchGameFinishedFragment(gameResult: GameResult) {
-        val args = Bundle().apply {
-            putParcelable(GameFinishedFragment.KEY_GAME_RESULT, gameResult)
-        }
-        findNavController().navigate(R.id.action_gameFragment2_to_gameFinishedFragment22, args)
+        findNavController().navigate(
+            GameFragmentDirections.actionGameFragment2ToGameFinishedFragment22(
+                gameResult
+            )
+        )
     }
 
-    private fun getColorByState(goodState: Boolean): Int{
-        val colorResId = if (goodState){
+    private fun getColorByState(goodState: Boolean): Int {
+        val colorResId = if (goodState) {
             android.R.color.holo_green_light
         } else {
             android.R.color.holo_red_light
         }
         return ContextCompat.getColor(requireContext(), colorResId)
-    }
-
-    companion object {
-
-        const val NAME = "GameFragment"
-
-        const val KEY_LEVEL = "level"
-
-        fun newInstance(level: Level): GameFragment {
-            return GameFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_LEVEL, level)
-                }
-            }
-        }
     }
 }
